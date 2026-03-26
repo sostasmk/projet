@@ -11,6 +11,8 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $stmt=$pdo->prepare($sql);
     $stmt->execute([$Codefrais,$NumAb,$Montp,$Typep,$Datep,$NumMat]);
     echo "Le paiement à été ajouté avec succès";
+    header("Location: ajoute.php?msg=success");
+    exit();
 }
 $data=$pdo->query("SELECT * FROM paiement");
 
@@ -47,6 +49,9 @@ $sql4="SELECT Codefrais, libelle, montant FROM fraisab";
 <body>
     <h1>Enregistrement des paiements</h1>
     <form action="" method="post">
+            <?php if(isset($_GET['msg']) && $_GET['msg'] == 'success'): ?>
+        <p style="color: green;">Le paiement a été ajouté avec succès.</p>
+    <?php endif; ?>
         <label for="Codefrais">Frais d'abonnement:</label>
         <select name="Codefrais" required>
             <option value="">Choisir le frais</option>

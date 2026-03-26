@@ -13,6 +13,12 @@ body {
             width: 350px;
             margin: 100px auto;
         }
+        p {
+            border: #000000 1px solid;
+            text-align: center;
+            color: #333;
+            padding: 10px;
+        }
 
         label {
             display: block;
@@ -61,7 +67,6 @@ body {
         width: 100%;
         margin: auto;
         background-color: #76cff8;
-
     }
     select {
             width: 100%;

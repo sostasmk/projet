@@ -12,6 +12,8 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $stmt=$pdo->prepare($sql);
     $stmt->execute([$Nummat,$Codefonc,$Nomag,$Postag,$Prenag,$Emailag,$phone]);
     echo "le personnel à été ajouté avec succès";
+    header("Location: ajoute.php?msg=success");
+    exit();
 }
 $data=$pdo->query("SELECT * FROM personnel");
 
@@ -34,6 +36,9 @@ $sql2="SELECT Codefonc, Libfonc FROM fonction";
 <body>
     <h1>Enregistrement des personnel</h1>
     <form action="" method="post">
+        <?php if(isset($_GET['msg']) && $_GET['msg'] == 'success'): ?>
+        <p>Le personnel a été ajouté avec succès.</p>
+    <?php endif; ?>
         <label for="Nummat">Numéro de matricule:</label>
         <input type="text" name="Nummat" placeholder="Saisir le numéro de matricule" required><br>
         <label for="Codefonc">Fonction:</label>
@@ -54,7 +59,7 @@ $sql2="SELECT Codefonc, Libfonc FROM fonction";
         <label for="phone">Téléphone:</label>
         <input type="text" name="phone" placeholder="Saisir le téléphone du personnel" required><br>
         <button type="submit">Enregistrer</button>
-        <a href="../../index.php">Retour vers le menu principal</a>
+        <a href="../../public/index.php">Retour vers le menu principal</a>
     </form>
     <h2>Liste des personnel</h2>
     <table border="1">

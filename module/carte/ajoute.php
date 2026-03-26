@@ -1,13 +1,16 @@
 <?php
  $pdo=new PDO("mysql:host=localhost;dbname=gesblio","root","");
 if($_SERVER['REQUEST_METHOD']=="POST"){
+    $Numcarte=$_POST['Numcarte'];
     $Datedelic=$_POST['Datedelic'];
     $Dateexp=$_POST['Dateexp'];
     $Typeab=$_POST['Typeab'];
-    $sql="INSERT INTO carte(Datedelic,Dateexp,Typeab) VALUES(?,?,?)";
+    $sql="INSERT INTO carte(Numcarte,Datedelic,Dateexp,Typeab) VALUES(?,?,?,?)";
     $stmt=$pdo->prepare($sql);
-    $stmt->execute([$Datedelic,$Dateexp,$Typeab]);
+    $stmt->execute([$Numcarte,$Datedelic,$Dateexp,$Typeab]);
     echo "La carte d'abonnement à été ajoutée avec succès";
+    header("Location: ajoute.php?msg=success");
+    exit();
 }
 $data=$pdo->query("SELECT * FROM carte");
 ?>
@@ -22,6 +25,11 @@ $data=$pdo->query("SELECT * FROM carte");
 <body>
     <h1>Enregistrement des cartes d'abonnement</h1>
     <form action="" method="post">
+        <?php if(isset($_GET['msg']) && $_GET['msg'] == 'success'): ?>
+        <p>La carte d'abonnement a été ajoutée avec succès.</p>
+        <?php endif; ?>
+        <label for="Numcarte">Numéro de carte:</label>
+        <input type="text" name="Numcarte" placeholder="C..." required><br>
         <label for="Datedelic">Date de délivrance:</label>
         <input type="date" name="Datedelic" required><br>
         <label for="Dateexp">Date d'expiration:</label>

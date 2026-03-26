@@ -14,7 +14,11 @@
         echo "Emprunt supprimé avec succès";
         header("Location: ajoute.php");
     }
-
+$sql2="SELECT NumAb, Nomab FROM abonnee";
+    $stmt2=$pdo->prepare($sql2);
+    $stmt2->execute();
+    $abonnee=($stmt2->fetch(PDO::FETCH_ASSOC));
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +31,7 @@
 <body>
     <h1>Suppression du emprunt</h1>
     <form method="POST">
-        <p>Êtes-vous sûr de vouloir supprimer l'emprunt n° <?php echo $emprunt["Numemp"] . " de l'abonné " . $abonnee["Prenab"];; ?> ?</p>
+        <p>Êtes-vous sûr de vouloir supprimer l'emprunt n° <?php echo $emprunt["Numemp"] . " de l'abonné " . $abonnee["Nomab"]; ?> ?</p>
         <button type="submit">Supprimer</button>
         <a href="ajoute.php">Annuler</a>
     </form>

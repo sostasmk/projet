@@ -78,7 +78,7 @@ $sql4="SELECT Codefrais, libelle, montant FROM fraisab";
         </select><br>
         <label for="Datep">Date du paiement:</label>
         <input type="date" name="Datep" value="<?php echo $paiement['Datep']; ?>" required><br>
-        <label for="NumMat">Numéro de matricule:</label>
+        <label for="NumMat">Nom du personnel:</label>
         <select name="NumMat" required>
             <?php foreach($personnel as $numMat => $nomAg): ?>
                 <option value="<?php echo $numMat; ?>" <?php echo ($numMat == $paiement['NumMat']) ? 'selected' : ''; ?>><?php echo $nomAg; ?></option>

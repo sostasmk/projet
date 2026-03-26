@@ -7,6 +7,8 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $stmt=$pdo->prepare($sql);
     $stmt->execute([$Codefonc,$Libfonc]);
     echo "La fonction à été ajoutée avec succès";
+    header("Location: ajoute.php?msg=success");
+    exit();
 }
 $data=$pdo->query("SELECT * FROM fonction");
 ?>
@@ -21,6 +23,9 @@ $data=$pdo->query("SELECT * FROM fonction");
 <body>
     <h1>Enregistrement des fonctions</h1>
     <form action="" method="post">
+            <?php if(isset($_GET['msg']) && $_GET['msg'] == 'success'): ?>
+        <p style="color: green;">La fonction a été ajoutée avec succès.</p>
+    <?php endif; ?>
         <label for="Codefonc">Code de la fonction:</label>
         <input type="text" name="Codefonc" placeholder="Saisir le code de la fonction" required><br>
         <label for="Libfonc">Libellé:</label>

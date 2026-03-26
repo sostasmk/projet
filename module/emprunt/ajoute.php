@@ -1,16 +1,19 @@
 <?php
  $pdo=new PDO("mysql:host=localhost;dbname=gesblio","root","");
 if($_SERVER['REQUEST_METHOD']=="POST"){
+    $Numemp=$_POST['Numemp'];
     $Dateemp=$_POST['Dateemp'];
     $Datert=$_POST['Datert'];
     $Etat=$_POST['Etat'];
     $NumAb=$_POST['NumAb'];
     $NumMat=$_POST['NumMat'];
     $Codelivre=$_POST['Codelivre'];
-    $sql="INSERT INTO emprunt(Dateemp,Datert,Etat,NumAb,NumMat,Codelivre) VALUES(?,?,?,?,?,?)";
+    $sql="INSERT INTO emprunt(Numemp,Dateemp,Datert,Etat,NumAb,NumMat,Codelivre) VALUES(?,?,?,?,?,?,?)";
     $stmt=$pdo->prepare($sql);
-    $stmt->execute([$Dateemp,$Datert,$Etat,$NumAb,$NumMat,$Codelivre]);
+    $stmt->execute([$Numemp,$Dateemp,$Datert,$Etat,$NumAb,$NumMat,$Codelivre]);
     echo "L'emprunt à été ajoutée avec succès";
+    header("Location: ajoute.php?msg=success");
+    exit();
 }
 $data=$pdo->query("SELECT * FROM emprunt");
 
@@ -21,12 +24,12 @@ $sql2="SELECT NumAb, Nomab FROM abonnee";
     while ($row=$stmt2->fetch(PDO::FETCH_ASSOC)) {
         $abonne[$row["NumAb"]] = $row["Nomab"];
     }
-$sql3="SELECT Nummat, Nomag FROM personnel";
+$sql3="SELECT Nummat,Codefonc FROM personnel";
     $stmt3=$pdo->prepare($sql3);
     $stmt3->execute();
     $personnel=[];
     while ($row=$stmt3->fetch(PDO::FETCH_ASSOC)) {
-        $personnel[$row["Nummat"]] = $row["Nomag"];
+        $personnel[$row["Nummat"]] = $row["Codefonc"];
     }
 $sql4="SELECT Codelivre, Titrelv FROM livre";
     $stmt4=$pdo->prepare($sql4);
@@ -47,6 +50,11 @@ $sql4="SELECT Codelivre, Titrelv FROM livre";
 <body>
     <h1>Enregistrement des emprunts</h1>
     <form action="" method="post">
+            <?php if(isset($_GET['msg']) && $_GET['msg'] == 'success'): ?>
+        <p style="color: green;">L'emprunt a été ajouté avec succès.</p>
+    <?php endif; ?>
+        <label for="Numemp">Numéro d'emprunt:</label>
+        <input type="text" name="Numemp" placeholder="Emprunt..." required><br>
         <label for="Dateemp">Date de délivrance:</label>
         <input type="date" name="Dateemp" required><br>
         <label for="Datert">Date de retour:</label>
@@ -70,8 +78,8 @@ $sql4="SELECT Codelivre, Titrelv FROM livre";
         <label for="NumMat">Numéro de matricule:</label>
         <select name="NumMat" required>
             <option value="">Choisir le personnel</option>
-            <?php foreach($personnel as $numMat => $nomAg): ?>
-                <option value="<?php echo $numMat; ?>"><?php echo $nomAg; ?></option>
+            <?php foreach($personnel as $numMat => $codeFonc): ?>
+                <option value="<?php echo $numMat; ?>"><?php echo $codeFonc; ?></option>
             <?php endforeach; ?>
         </select><br>
         <label for="Codelivre">Code du livre:</label>

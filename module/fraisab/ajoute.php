@@ -9,6 +9,8 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $stmt=$pdo->prepare($sql);
     $stmt->execute([$Codefrais,$Libelle,$Montant,$Dureeab]);
     echo "Le frais d'abonnement à été ajouté avec succès";
+    header("Location: ajoute.php?msg=success");
+    exit();
 }
 $data=$pdo->query("SELECT * FROM fraisab");
 ?>
@@ -23,6 +25,9 @@ $data=$pdo->query("SELECT * FROM fraisab");
 <body>
     <h1>Enregistrement des frais d'abonnement</h1>
     <form action="" method="post">
+        <?php if(isset($_GET['msg']) && $_GET['msg'] == 'success'): ?>
+        <p style="color: green;">Le frais d'abonnement a été ajouté avec succès.</p>
+    <?php endif; ?>
         <label for="Codefrais">Code du frais:</label>
         <input type="text" name="Codefrais" placeholder="Saisir le code du frais" required><br>
         <label for="Libelle">Libellé:</label>

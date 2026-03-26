@@ -10,6 +10,8 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $stmt=$pdo->prepare($sql);
     $stmt->execute([$Codelivre,$Titrelv,$Auteur,$Categlv,$Pagelv]);
     echo "Le livre à été ajouté avec succès";
+    header("Location: ajoute.php?msg=success");
+    exit();
 }
 $data=$pdo->query("SELECT * FROM livre");
 ?>
@@ -24,6 +26,9 @@ $data=$pdo->query("SELECT * FROM livre");
 <body>
     <h1>Enregistrement des livres</h1>
     <form action="" method="post">
+            <?php if(isset($_GET['msg']) && $_GET['msg'] == 'success'): ?>
+        <p style="color: green;">Le livre a été ajouté avec succès.</p>
+    <?php endif; ?>
         <label for="Codelivre">Code du livre:</label>
         <input type="text" name="Codelivre" placeholder="Saisir le code du livre" required><br>
         <label for="Titrelv">Titre:</label>

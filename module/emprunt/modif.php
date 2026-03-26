@@ -29,12 +29,12 @@ $sql2="SELECT NumAb, Nomab FROM abonnee";
     while ($row=$stmt2->fetch(PDO::FETCH_ASSOC)) {
         $abonne[$row["NumAb"]] = $row["Nomab"];
     }
-$sql3="SELECT Nummat, Nomag FROM personnel";
+$sql3="SELECT Nummat,Codefonc FROM personnel";
     $stmt3=$pdo->prepare($sql3);
     $stmt3->execute();
     $personnel=[];
     while ($row=$stmt3->fetch(PDO::FETCH_ASSOC)) {
-        $personnel[$row["Nummat"]] = $row["Nomag"];
+        $personnel[$row["Nummat"]] = $row["Codefonc "];
     }
 $sql4="SELECT Codelivre, Titrelv FROM livre";
     $stmt4=$pdo->prepare($sql4);
@@ -79,8 +79,8 @@ $sql4="SELECT Codelivre, Titrelv FROM livre";
 
         <label for="NumMat">Numéro de matricule:</label>
         <select name="NumMat" required>
-            <?php foreach($personnel as $numMat => $nomAg): ?>
-                <option value="<?php echo $numMat; ?>" <?php echo ($numMat == $emprunt['NumMat']) ? 'selected' : ''; ?>><?php echo $nomAg; ?></option>
+            <?php foreach($personnel as $numMat => $codeFonc): ?>
+                <option value="<?php echo $numMat; ?>" <?php echo ($numMat == $emprunt['NumMat']) ? 'selected' : ''; ?>><?php echo $codeFonc; ?></option>
             <?php endforeach; ?>
         </select><br>
 

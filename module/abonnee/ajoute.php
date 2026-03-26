@@ -15,8 +15,17 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $stmt=$pdo->prepare($sql);
     $stmt->execute([$NumAb,$Numcarte,$Nomab,$Postnomab,$Prenab,$Sexab,$Typeab,$Adresab,$Emailab,$Phoneab]);
     echo "l'Abonné à été ajouté avec succès";
+    header("Location: ajoute.php?msg=success");
+    exit();
 }
 $data=$pdo->query("SELECT * FROM abonnee");
+$sql2="SELECT Numcarte, Datedelic FROM carte";
+    $stmt2=$pdo->prepare($sql2);
+    $stmt2->execute();
+    $Numcarte=[];
+    while ($row=$stmt2->fetch(PDO::FETCH_ASSOC)) {
+        $Numcarte[$row["Numcarte"]] = $row["Datedelic"];
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,10 +38,19 @@ $data=$pdo->query("SELECT * FROM abonnee");
 <body>
     <h1>Enregistrement des abonnée</h1>
     <form action="" method="post">
+        <?php if(isset($_GET['msg']) && $_GET['msg'] == 'success'): ?>
+        <p style="color: green;">L'abonné a été ajouté avec succès.</p>
+    <?php endif; ?>
         <label for="NumAb">Numéro d'abonné:</label>
         <input type="text" name="NumAb" placeholder="Saisir le numéro d'abonné" required><br>
         <label for="Numcarte">Numéro de carte:</label>
-        <input type="text" name="Numcarte" placeholder="Saisir le numéro de carte" required><br>
+        <select name="Numcarte" required>
+            <option value="">Choisir le numéro de carte</option>
+            <?php foreach($Numcarte as $numCarte => $dateDelic): ?>
+                <option value="<?php echo $numCarte; ?>"><?php echo "N°" . $numCarte . " delivré le " . $dateDelic; ?></option>
+            <?php endforeach; ?>
+        </select>
+        <br>
         <label for="Nomab">Nom:</label>
         <input type="text" name="Nomab" placeholder="Saisir le nom de l'abonné" required><br>
         <label for="Postnomab">Postnom:</label>
@@ -44,7 +62,6 @@ $data=$pdo->query("SELECT * FROM abonnee");
             <option value="">Choix du Sexe</option>
             <option value="Masculin">M</option>
             <option value="Féminin">F</option>
-        </select><br>
         </select><br>
         <label for="Typeab">Type d'abonnement:</label>
         <select name="Typeab" required>
